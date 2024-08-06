@@ -45,6 +45,7 @@ public class Spawner : MonoBehaviour
     private Cube CreateCube()
     {
         Cube cube = Instantiate(_prefabCube);
+        cube.Released += Release;
 
         return cube;
     }
@@ -54,9 +55,14 @@ public class Spawner : MonoBehaviour
         _pool.Get();
     }
 
+    private void Release(Cube cube)
+    {
+        _pool.Release(cube);
+    }
 
     private void DeleteCube(Cube cube)
     {
+        cube.Released -= Release;
         Destroy(cube);
     }
 

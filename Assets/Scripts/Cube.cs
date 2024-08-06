@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 using Random = UnityEngine.Random;
@@ -15,6 +16,8 @@ public class Cube : MonoBehaviour
     private Color _startColor = Color.green;
     private bool _isHit = false;
 
+    public event Action<Cube> Released;
+
     public Rigidbody Rigidbody { get; private set; }
     public Renderer Renderer { get; private set; }
 
@@ -25,20 +28,21 @@ public class Cube : MonoBehaviour
         Renderer.material.color = _startColor;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.TryGetComponent<Platform>(out Platform platform) && _isHit == false)
-        {
-            _isHit = true;
-            ChangeColor();
-            Delete();
-        }
-    }
-
     private void OnEnable()
     {
         _isHit = false;
         Renderer.material.color = _startColor;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (_isHit == false && collision.gameObject.TryGetComponent<Platform>(out Platform platform))
+        {
+            _isHit = true;
+            ChangeColor();
+            int timeToDestroy = Random.Range(_minTimeToDestroy, _maxTimeToDestroy);
+            StartCoroutine(Relese(timeToDestroy));
+        }
     }
 
     private void ChangeColor()
@@ -50,5 +54,12 @@ public class Cube : MonoBehaviour
     {
         int timeToDestroy = Random.Range(_minTimeToDestroy, _maxTimeToDestroy);
         Destroy(gameObject, timeToDestroy);
+    }
+
+    private IEnumerator Relese(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Released?.Invoke(this);
     }
 }

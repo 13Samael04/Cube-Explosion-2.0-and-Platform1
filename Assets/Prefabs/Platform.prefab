@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _platform: {fileID: 7520183489783768865}
-  _prefabCube: {fileID: 834177087631833699, guid: 3ad73647fd019284cbcb88ee52734227, type: 3}
+  _prefabCube: {fileID: 7433436067414153342, guid: 3ad73647fd019284cbcb88ee52734227, type: 3}
   _delay: 1
   _startSizePool: 5
   _maxSizePool: 10
