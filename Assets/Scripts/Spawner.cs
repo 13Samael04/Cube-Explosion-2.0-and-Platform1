@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -32,7 +33,7 @@ public class Spawner : MonoBehaviour
         _maxOffsetX = _platform.localScale.x * _indexOffset;
         _maxOffsetZ = _platform.localScale.z * _indexOffset;
 
-        InvokeRepeating(nameof(GetCube), 0f, _delay);
+        StartCoroutine(nameof(ActiveSpawn), _delay);
     }
 
     private void ActivateCube(Cube cube)
@@ -50,7 +51,7 @@ public class Spawner : MonoBehaviour
         return cube;
     }
 
-    private void GetCube()
+    private void SpawnCube()
     {
         _pool.Get();
     }
@@ -75,5 +76,15 @@ public class Spawner : MonoBehaviour
         float positionZ = _platform.position.z + positionOffsetZ;
 
         return new Vector3(positionX, _maxOffsetY, positionZ);
+    }
+
+    private IEnumerator ActiveSpawn(float delay)
+    {
+        while (true)
+        {
+            SpawnCube();
+
+            yield return new WaitForSeconds(delay);
+        }
     }
 }

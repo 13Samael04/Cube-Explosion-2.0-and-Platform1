@@ -50,12 +50,6 @@ public class Cube : MonoBehaviour
         Renderer.material.color = Color.red;
     }
 
-    private void Delete()
-    {
-        int timeToDestroy = Random.Range(_minTimeToDestroy, _maxTimeToDestroy);
-        Destroy(gameObject, timeToDestroy);
-    }
-
     private IEnumerator Relese(float delay)
     {
         yield return new WaitForSeconds(delay);
